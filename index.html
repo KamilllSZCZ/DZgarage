@@ -1,14 +1,3 @@
-<?php
-session_start();
-if (isset($_SESSION['booking_message'])):
-    $msg = $_SESSION['booking_message'];
-    unset($_SESSION['booking_message']);
-?>
-  <div id="booking-message" class="message <?= htmlspecialchars($msg['type']) ?>">
-    <?= htmlspecialchars($msg['text']) ?>
-  </div>
-<?php endif; ?>
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -49,19 +38,22 @@ if (isset($_SESSION['booking_message'])):
       <div class="container">
         <h2>Nasze usługi</h2>
         <div class="services-grid">
-          <?php
-          $services = [
-            "Detailing wnętrza" => "Dokładne czyszczenie, impregnacja i odświeżenie tapicerki i plastiku.",
-            "Detailing zewnętrzny" => "Mycie, dekontaminacja, korekta lakieru i zabezpieczenie ceramiczne.",
-            "Wulkanizacja" => "Sezonowa wymiana opon, wyważanie, naprawa przebitych kół.",
-            "Naprawy bieżące" => "Wymiana oleju, filtrów, płynów eksploatacyjnych i inne drobne naprawy."
-          ];
-          foreach ($services as $title => $description): ?>
-            <div class="service-card">
-              <h3><?= htmlspecialchars($title) ?></h3>
-              <p><?= htmlspecialchars($description) ?></p>
-            </div>
-          <?php endforeach; ?>
+          <div class="service-card">
+            <h3>Detailing wnętrza</h3>
+            <p>Dokładne czyszczenie, impregnacja i odświeżenie tapicerki i plastiku.</p>
+          </div>
+          <div class="service-card">
+            <h3>Detailing zewnętrzny</h3>
+            <p>Mycie, dekontaminacja, korekta lakieru i zabezpieczenie ceramiczne.</p>
+          </div>
+          <div class="service-card">
+            <h3>Wulkanizacja</h3>
+            <p>Sezonowa wymiana opon, wyważanie, naprawa przebitych kół.</p>
+          </div>
+          <div class="service-card">
+            <h3>Naprawy bieżące</h3>
+            <p>Wymiana oleju, filtrów, płynów eksploatacyjnych i inne drobne naprawy.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -74,19 +66,22 @@ if (isset($_SESSION['booking_message'])):
             <tr><th>Usługa</th><th>Cena od</th></tr>
           </thead>
           <tbody>
-            <?php
-            $pricing = [
-              "Detailing wnętrza" => "200 zł",
-              "Detailing zewnętrzny" => "300 zł",
-              "Wulkanizacja" => "60 zł",
-              "Naprawy bieżące" => "wycena indywidualna"
-            ];
-            foreach ($pricing as $service => $price): ?>
-              <tr>
-                <td><?= htmlspecialchars($service) ?></td>
-                <td><?= htmlspecialchars($price) ?></td>
-              </tr>
-            <?php endforeach; ?>
+            <tr>
+              <td>Detailing wnętrza</td>
+              <td>200 zł</td>
+            </tr>
+            <tr>
+              <td>Detailing zewnętrzny</td>
+              <td>300 zł</td>
+            </tr>
+            <tr>
+              <td>Wulkanizacja</td>
+              <td>60 zł</td>
+            </tr>
+            <tr>
+              <td>Naprawy bieżące</td>
+              <td>wycena indywidualna</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -97,35 +92,40 @@ if (isset($_SESSION['booking_message'])):
         <h2>Rezerwacja online</h2>
         <p>Zarezerwuj dogodny termin. System dostępny 24/7.</p>
         <form id="booking-form" action="/four_garage/booking.php" method="POST">
-          <?php
-          $formFields = [
-            "date" => ["label" => "Data:", "type" => "date", "required" => true],
-            "hour" => ["label" => "Godzina:", "type" => "select", "options" => ["Wybierz godzinę"], "required" => true],
-            "minute" => ["label" => "Minuta:", "type" => "select", "options" => ["00", "30"], "required" => true],
-            "service" => ["label" => "Usługa:", "type" => "select", "options" => ["Detailing wnętrza", "Detailing zewnętrzny", "Wulkanizacja", "Naprawy bieżące"], "required" => true],
-            "customer_email" => ["label" => "Adres e-mail:", "type" => "email", "required" => true],
-            "customer_phone" => ["label" => "Numer telefonu:", "type" => "tel", "required" => true, "placeholder" => "np. 123 456 789"]
-          ];
-          foreach ($formFields as $name => $field): ?>
-            <div class="form-field">
-              <label for="<?= htmlspecialchars($name) ?>"><?= htmlspecialchars($field['label']) ?></label>
-              <?php if ($field['type'] === "select"): ?>
-                <select id="<?= htmlspecialchars($name) ?>" name="<?= htmlspecialchars($name) ?>" <?= $field['required'] ? "required" : "" ?>>
-                  <?php foreach ($field['options'] as $option): ?>
-                    <option value="<?= htmlspecialchars($option) ?>"><?= htmlspecialchars($option) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              <?php else: ?>
-                <input
-                  type="<?= htmlspecialchars($field['type']) ?>"
-                  id="<?= htmlspecialchars($name) ?>"
-                  name="<?= htmlspecialchars($name) ?>"
-                  <?= $field['required'] ? "required" : "" ?>
-                  <?= isset($field['placeholder']) ? "placeholder='" . htmlspecialchars($field['placeholder']) . "'" : "" ?>
-                >
-              <?php endif; ?>
-            </div>
-          <?php endforeach; ?>
+          <div class="form-field">
+            <label for="date">Data:</label>
+            <input type="date" id="date" name="date" required>
+          </div>
+          <div class="form-field">
+            <label for="hour">Godzina:</label>
+            <select id="hour" name="hour" required>
+              <option value="">Wybierz godzinę</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="minute">Minuta:</label>
+            <select id="minute" name="minute" required>
+              <option value="00">00</option>
+              <option value="30">30</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="service">Usługa:</label>
+            <select id="service" name="service" required>
+              <option value="Detailing wnętrza">Detailing wnętrza</option>
+              <option value="Detailing zewnętrzny">Detailing zewnętrzny</option>
+              <option value="Wulkanizacja">Wulkanizacja</option>
+              <option value="Naprawy bieżące">Naprawy bieżące</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="customer_email">Adres e-mail:</label>
+            <input type="email" id="customer_email" name="customer_email" required>
+          </div>
+          <div class="form-field">
+            <label for="customer_phone">Numer telefonu:</label>
+            <input type="tel" id="customer_phone" name="customer_phone" required placeholder="np. 123 456 789">
+          </div>
           <div class="form-field full-width">
             <button type="submit" class="btn-primary">Zarezerwuj</button>
           </div>
